@@ -1,0 +1,6 @@
+python -m venv env
+pip install pytest
+pip install selenium
+pip install selenium pytest
+npx create-react-app login
+npm start
