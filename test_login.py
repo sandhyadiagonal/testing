@@ -8,9 +8,12 @@ import time
 
 @pytest.fixture
 def driver():
-    # Set up Edge WebDriver with the correct path; C:\\Program Files\\Webdriver\\msedgedriver.exe or 
+    # Set up Edge WebDriver with the correct path
     service = EdgeService(executable_path="/usr/local/bin/msedgedriver")
-    driver = webdriver.Edge(service=service)
+    options = webdriver.EdgeOptions()
+    # Specify a unique user data directory to avoid conflicts
+    options.add_argument("--user-data-dir=/tmp/edge_user_data")
+    driver = webdriver.Edge(service=service, options=options)
     driver.get("http://localhost:3000")  # URL for the running React app
     yield driver
     driver.quit()
@@ -45,7 +48,7 @@ def test_invalid_login(driver):
     login_button.click()
 
     error_message = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "success-message"))
+        EC.presence_of_element_located((By.ID, "error-message"))
     )
     assert error_message.text == "Invalid username or password", "Expected invalid login message not found."
     time.sleep(2)
@@ -60,7 +63,7 @@ def test_empty_username(driver):
     login_button.click()
 
     error_message = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "success-message"))
+        EC.presence_of_element_located((By.ID, "error-message"))
     )
     assert error_message.text == "Invalid username or password", "Expected invalid login message not found."
     time.sleep(2)
@@ -75,7 +78,7 @@ def test_empty_password(driver):
     login_button.click()
 
     error_message = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "success-message"))
+        EC.presence_of_element_located((By.ID, "error-message"))
     )
     assert error_message.text == "Invalid username or password", "Expected invalid login message not found."
     time.sleep(2)
@@ -86,11 +89,8 @@ def test_empty_username_and_password(driver):
     login_button = driver.find_element(By.ID, "login-button")
     login_button.click()
 
-    error_message = WebDriverWait(driver, 15).until(
-        EC.presence_of_element_located((By.ID, "success-message"))
+    error_message = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.ID, "error-message"))
     )
     assert error_message.text == "Invalid username or password", "Expected invalid login message not found."
     time.sleep(2)
-    
-def test_empty_username(driver):
-    WebDriverWait(driver,2).until(EC.presence_of_element_located((By.ID, "username")))
