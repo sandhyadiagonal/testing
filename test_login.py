@@ -17,7 +17,7 @@ def driver():
     options.set_preference("profile", temp_dir)
 
     # Run in headless mode for environments without display capabilities
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
 
     # Initialize the WebDriver
     driver = webdriver.Firefox(service=service, options=options)
