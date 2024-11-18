@@ -1,26 +1,26 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import tempfile
 
 @pytest.fixture
 def driver():
-    # Set up Edge WebDriver with the correct path
-    service = EdgeService(executable_path="/usr/local/bin/msedgedriver")
-    options = webdriver.EdgeOptions()
+    # Set up Firefox WebDriver with the correct path
+    service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+    options = webdriver.FirefoxOptions()
 
     # Use a temporary directory for user data to avoid conflicts
     temp_dir = tempfile.mkdtemp()
-    options.add_argument(f"--user-data-dir={temp_dir}")
+    options.set_preference("profile", temp_dir)
 
     # Run in headless mode for environments without display capabilities
     # options.add_argument("--headless")
 
     # Initialize the WebDriver
-    driver = webdriver.Edge(service=service, options=options)
+    driver = webdriver.Firefox(service=service, options=options)
     driver.get("http://localhost:3000")  # URL for the running React app
     yield driver
     driver.quit()
