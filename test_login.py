@@ -8,8 +8,8 @@ import time
 
 @pytest.fixture
 def driver():
-    # Set up Edge WebDriver with the correct path
-    service = EdgeService(executable_path="C:\\Program Files\\Webdriver\\msedgedriver.exe")
+    # Set up Edge WebDriver with the correct path; C:\\Program Files\\Webdriver\\msedgedriver.exe or 
+    service = EdgeService(executable_path="/usr/local/bin/msedgedriver")
     driver = webdriver.Edge(service=service)
     driver.get("http://localhost:3000")  # URL for the running React app
     yield driver
