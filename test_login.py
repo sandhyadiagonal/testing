@@ -17,7 +17,7 @@ def driver():
     options.add_argument(f"--user-data-dir={temp_dir}")
 
     # Run in headless mode for environments without display capabilities
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
 
     # Initialize the WebDriver
     driver = webdriver.Edge(service=service, options=options)
