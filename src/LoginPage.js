@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loginMessage, setLoginMessage] = useState('');  // New state for login message
+    const [loginMessage, setLoginMessage] = useState('');
 
     const handleLogin = (event) => {
         event.preventDefault();
         
-        // Simple login validation for testing
-        if (username === 'testuser' && password === 'testpass') {
-            setLoginMessage('Login successful');
-        } else {
-            setLoginMessage('Invalid username or password');
-        }
+        // Call the onLogin prop to handle the login logic in App.js
+        onLogin(username, password, setLoginMessage);
     };
 
     return (
