@@ -5,11 +5,16 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import tempfile
+import os
 
 @pytest.fixture
 def driver():
-    # Set up Firefox WebDriver with the correct path
-    service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+    # Dynamically locate geckodriver
+    gecko_path = os.getenv("GECKODRIVER_PATH", "/usr/local/bin/geckodriver")
+    if not os.path.exists(gecko_path):
+        raise FileNotFoundError(f"Geckodriver not found at {gecko_path}. Ensure the correct path is set.")
+
+    service = FirefoxService(executable_path=gecko_path)
     options = webdriver.FirefoxOptions()
 
     # Use a temporary directory for user data to avoid conflicts
@@ -52,10 +57,14 @@ def test_invalid_login(driver):
     password_input.send_keys("wrongpass")
     login_button.click()
 
-    error_message = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "error-message"))
-    )
-    assert error_message.text == "Invalid username or password", "Expected 'Invalid username or password' message not found."
+    try:
+        error_message = WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, "error-message"))
+        )
+        assert error_message.text == "Invalid username or password", \
+            f"Error message text mismatch: Found '{error_message.text}'"
+    except Exception as e:
+        raise AssertionError("Error message element not found or text missing.") from e
 
 def test_empty_username(driver):
     WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
@@ -66,10 +75,14 @@ def test_empty_username(driver):
     password_input.send_keys("testpass")
     login_button.click()
 
-    error_message = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "error-message"))
-    )
-    assert error_message.text == "Invalid username or password", "Expected 'Invalid username or password' message not found."
+    try:
+        error_message = WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, "error-message"))
+        )
+        assert error_message.text == "Invalid username or password", \
+            f"Error message text mismatch: Found '{error_message.text}'"
+    except Exception as e:
+        raise AssertionError("Error message element not found or text missing.") from e
 
 def test_empty_password(driver):
     WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
@@ -80,10 +93,14 @@ def test_empty_password(driver):
     username_input.send_keys("testuser")
     login_button.click()
 
-    error_message = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "error-message"))
-    )
-    assert error_message.text == "Invalid username or password", "Expected 'Invalid username or password' message not found."
+    try:
+        error_message = WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, "error-message"))
+        )
+        assert error_message.text == "Invalid username or password", \
+            f"Error message text mismatch: Found '{error_message.text}'"
+    except Exception as e:
+        raise AssertionError("Error message element not found or text missing.") from e
 
 def test_empty_username_and_password(driver):
     WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
@@ -91,7 +108,11 @@ def test_empty_username_and_password(driver):
     login_button = driver.find_element(By.ID, "login-button")
     login_button.click()
 
-    error_message = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "error-message"))
-    )
-    assert error_message.text == "Invalid username or password", "Expected 'Invalid username or password' message not found."
+    try:
+        error_message = WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, "error-message"))
+        )
+        assert error_message.text == "Invalid username or password", \
+            f"Error message text mismatch: Found '{error_message.text}'"
+    except Exception as e:
+        raise AssertionError("Error message element not found or text missing.") from e
