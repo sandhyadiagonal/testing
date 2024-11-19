@@ -39,41 +39,38 @@ def test_invalid_login(driver):
     assert error_message.text == "Invalid username or password"
 
 
-# def test_empty_username(driver):
-#     WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
+def test_empty_username(driver):
+    WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
+    password_input = driver.find_element(By.ID, "password")
+    login_button = driver.find_element(By.ID, "login-button")
+    password_input.send_keys("testpass")
+    login_button.click()
+    error_message = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.ID, "error-message"))
+    )
+    assert error_message.text == "Invalid username or password"
 
-#     password_input = driver.find_element(By.ID, "password")
-#     login_button = driver.find_element(By.ID, "login-button")
+def test_empty_password(driver):
+    WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
 
-#     password_input.send_keys("testpass")
-#     login_button.click()
+    username_input = driver.find_element(By.ID, "username")
+    login_button = driver.find_element(By.ID, "login-button")
 
-#     error_message = WebDriverWait(driver, 5).until(
-#         EC.presence_of_element_located((By.ID, "error-message"))
-#     )
-#     assert error_message.text == "Invalid username or password", "Expected 'Invalid username or password' message not found."
+    username_input.send_keys("testuser")
+    login_button.click()
 
-# def test_empty_password(driver):
-#     WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
+    error_message = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.ID, "error-message"))
+    )
+    assert error_message.text == "Inavalid username or password"
 
-#     username_input = driver.find_element(By.ID, "username")
-#     login_button = driver.find_element(By.ID, "login-button")
+def test_empty_username_and_password(driver):
+    WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
 
-#     username_input.send_keys("testuser")
-#     login_button.click()
+    login_button = driver.find_element(By.ID, "login-button")
+    login_button.click()
 
-#     error_message = WebDriverWait(driver, 5).until(
-#         EC.presence_of_element_located((By.ID, "error-message"))
-#     )
-#     assert error_message.text == "Inavalid username or password", "Expected 'Invalid username or password' message not found."
-
-# def test_empty_username_and_password(driver):
-#     WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
-
-#     login_button = driver.find_element(By.ID, "login-button")
-#     login_button.click()
-
-#     error_message = WebDriverWait(driver, 5).until(
-#         EC.presence_of_element_located((By.ID, "error-message"))
-#     )
-#     assert error_message.text == "Invalid username or password", "Expected 'Invalid username or password' message not found."
+    error_message = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.ID, "error-message"))
+    )
+    assert error_message.text == "Invalid username or password"
