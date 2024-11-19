@@ -62,7 +62,7 @@ def test_empty_password(driver):
     error_message = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.ID, "error-message"))
     )
-    assert error_message.text == "Inavalid username or password"
+    assert error_message.text == "Invalid username or password"
 
 def test_empty_username_and_password(driver):
     WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "username")))
