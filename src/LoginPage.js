@@ -4,12 +4,17 @@ const LoginPage = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // Added error message state
 
     const handleLogin = (event) => {
         event.preventDefault();
-        
+
+        // Clear messages before login
+        setLoginMessage('');
+        setErrorMessage('');
+
         // Call the onLogin prop to handle the login logic in App.js
-        onLogin(username, password, setLoginMessage);
+        onLogin(username, password, setLoginMessage, setErrorMessage);
     };
 
     return (
@@ -39,10 +44,9 @@ const LoginPage = ({ onLogin }) => {
                 <button type="submit" id="login-button">Login</button>
             </form>
             
-            {/* Display login message */}
-            {loginMessage && (
-                <div id="success-message">{loginMessage}</div>
-            )}
+            {/* Display login or error message */}
+            {loginMessage && <div id="success-message">{loginMessage}</div>}
+            {errorMessage && <div id="error-message">{errorMessage}</div>}
         </div>
     );
 };
