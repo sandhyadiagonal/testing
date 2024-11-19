@@ -3,18 +3,12 @@ import React, { useState } from 'react';
 const LoginPage = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loginMessage, setLoginMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState(''); // Added error message state
+    const [message, setMessage] = useState('');
 
     const handleLogin = (event) => {
         event.preventDefault();
-
-        // Clear messages before login
-        setLoginMessage('');
-        setErrorMessage('');
-
-        // Call the onLogin prop to handle the login logic in App.js
-        onLogin(username, password, setLoginMessage, setErrorMessage);
+        setMessage('');
+        onLogin(username, password, setMessage);
     };
 
     return (
@@ -43,10 +37,7 @@ const LoginPage = ({ onLogin }) => {
                 <br />
                 <button type="submit" id="login-button">Login</button>
             </form>
-            
-            {/* Display login or error message */}
-            {loginMessage && <div id="success-message">{loginMessage}</div>}
-            {errorMessage && <div id="error-message">{errorMessage}</div>}
+            {message && <div id={message.includes('Invalid') ? "error-message" : "success-message"}>{message}</div>}
         </div>
     );
 };
